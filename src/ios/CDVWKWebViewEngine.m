@@ -47,7 +47,9 @@
 // see forwardingTargetForSelector: selector comment for the reason for this pragma
 #pragma clang diagnostic ignored "-Wprotocol"
 
-@implementation CDVWKWebViewEngine
+@implementation CDVWKWebViewEngine {
+    CGRect _frame;
+}
 
 @synthesize engineWebView = _engineWebView;
 
@@ -59,7 +61,7 @@
             return nil;
         }
 
-        self.engineWebView = [[WKWebView alloc] initWithFrame:frame];
+        _frame = frame;
     }
 
     return self;
@@ -96,7 +98,7 @@
     configuration.userContentController = userContentController;
 
     // re-create WKWebView, since we need to update configuration
-    WKWebView* wkWebView = [[WKWebView alloc] initWithFrame:self.engineWebView.frame configuration:configuration];
+    WKWebView* wkWebView = [[WKWebView alloc] initWithFrame:_frame configuration:configuration];
     wkWebView.UIDelegate = self.uiDelegate;
     self.engineWebView = wkWebView;
 
